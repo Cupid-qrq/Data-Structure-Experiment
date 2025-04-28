@@ -74,6 +74,7 @@ status RemoveList(LISTS &Lists, char ListName[]);
 status SwitchList(LISTS &Lists, char ListName[]);
 void PrintLists(LISTS Lists);
 void printMenu(LISTS &Lists);
+
 /*--------------------------------------------------*/
 
 status
@@ -383,17 +384,21 @@ status SaveList(List L, char FileName[])
     if (L.head == NULL)
         return INFEASIBLE;
 
+    // 打开文件（文本模式写入）
     FILE *fp = fopen(FileName, "w");
     if (fp == NULL)
         return ERROR;
 
-    LinkList p = L.head->next;
+    // 遍历链表并写入数据
+    LinkList p = L.head->next; // 跳过头节点
     while (p != NULL)
     {
-        fprintf(fp, "%d ", p->data);
+        fprintf(fp, "%d ", p->data); // 用空格分隔数据
         p = p->next;
     }
+
     fclose(fp);
+    return OK;
 
     return OK;
 }
@@ -401,27 +406,55 @@ status SaveList(List L, char FileName[])
 status LoadList(List &L, char FileName[])
 {
     if (L.head != NULL)
-        return INFEASIBLE;
-
-    FILE *fp = fopen(FileName, "r");
-    if (fp == NULL)
-        return ERROR;
-
-    L.head = (LinkList)malloc(sizeof(LNode));
-    L.head->next = NULL;
-    LinkList p = L.head;
-
-    ElemType num;
-    while (fscanf(fp, "%d", &num) == 1)
     {
-        LinkList newNode = (LinkList)malloc(sizeof(LNode));
-        newNode->data = num;
-        newNode->next = NULL;
-        p->next = newNode;
-        p = newNode;
+        printf("表已存在，无法加载！\n");
+        return INFEASIBLE;
     }
-    fclose(fp);
 
+    // 打开文件（文本模式读取）
+    FILE *fp1 = fopen(FileName, "r");
+    if (fp1 == NULL)
+    {
+        printf("文件打开失败！\n");
+        printf("打开文件失败，文件名: %s\n", FileName);
+        perror("具体错误原因");
+        return ERROR;
+    }
+
+    // 创建头节点
+    L.head = (LinkList)malloc(sizeof(LNode));
+    if (L.head == NULL)
+    {
+        fclose(fp1);
+        printf("内存分配失败！\n");
+        return OVERFLOW;
+    }
+    L.head->next = NULL;
+
+    // 读取文件并构建链表
+    LinkList tail = L.head; // 尾指针
+    ElemType e;
+    while (fscanf(fp1, "%d", &e) == 1)
+    { // 成功读取一个整数
+        LinkList newNode = (LinkList)malloc(sizeof(LNode));
+        if (newNode == NULL)
+        {
+            fclose(fp1);
+            printf("内存分配失败！\n");
+            return OVERFLOW;
+        }
+        newNode->data = e;
+        newNode->next = NULL;
+        tail->next = newNode;
+        tail = newNode;
+    }
+
+    fclose(fp1);
+
+    int ch;
+    while ((ch = getchar()) != '\n' && ch != EOF)
+    {
+    } // 清空输入缓冲区
     return OK;
 }
 
@@ -539,7 +572,7 @@ int main()
     system("cls");
     printf("--------------------------------------------------\n");
     printf("这是一个多线性表系统，可以对单个或多个线性表进行操作\n");
-    printf("Ahtuor：HUST Cupid-qrq\n");
+    printf("Author：HUST Cupid-qrq\n");
     printf("--------------------------------------------------\n");
     printf("在开始之前，请先输入第一个线性表的名称：\n");
     if (scanf("%s", firstname) != 1)
@@ -556,7 +589,7 @@ int main()
     int op = 1;
     int i, e;
     int pre_e, cur_e, next_e;
-    char filename[30], listname[30];
+    char filename[100], listname[100];
 
     while (op)
     {

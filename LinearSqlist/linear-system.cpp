@@ -456,7 +456,7 @@ int main()
     system("cls");
     printf("--------------------------------------------------\n");
     printf("这是一个多线性表系统，可以对单个或多个线性表进行操作\n");
-    printf("Ahtuor：HUST Cupid-qrq\n");
+    printf("Author：HUST Cupid-qrq\n");
     printf("--------------------------------------------------\n");
     printf("在开始之前，请先输入第一个线性表的名称：\n");
     if (scanf("%s", firstname) != 1)
