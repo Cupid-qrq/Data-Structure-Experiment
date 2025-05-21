@@ -55,7 +55,7 @@ status ListInsert(SqList &L, int i, ElemType &e);
 status ListDelete(SqList &L, int i, ElemType &e);
 status ListTraverse(SqList &L);
 
-status MaxSubArray(SqList &L);
+int MaxSubArray(SqList &L);
 int SubArrayNum(SqList &L, int k);
 status SortList(SqList &L);
 status SaveList(SqList L, char FileName[]);
@@ -252,7 +252,7 @@ status ListTraverse(SqList &L)
     return OK;
 }
 
-status MaxSubArray(SqList &L)
+int MaxSubArray(SqList &L)
 {
     if (L.elem == NULL)
         return INFEASIBLE;
@@ -395,6 +395,8 @@ status RemoveList(LISTS &Lists, char ListName[])
             memset(Lists.elem[Lists.length - 1].name, 0, 30);
 
             Lists.length--;
+
+            Lists.cur_index = 0;
             return OK;
         }
     }
@@ -534,8 +536,10 @@ int main()
             printf("请输入要查找的元素值：");
             scanf("%d", &e);
             i = LocateElem(Lists.elem[Lists.cur_index], e);
-            if (i != ERROR)
+            if (i != ERROR && i != INFEASIBLE)
                 printf("元素 %d 的位置为：%d\n", e, i);
+            else if (i == INFEASIBLE)
+                printf("表不存在！\n");
             else
                 printf("查找失败！\n");
             break;

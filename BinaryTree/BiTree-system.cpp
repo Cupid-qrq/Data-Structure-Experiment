@@ -1,5 +1,5 @@
 /*---------------------------------------------
-|  Chain Table On Sequence Structure          |
+|  Binary Tree On Binary Linked List          |
 |  Author:qrq 2402                            |
 |  Date:2025.4.27                             |
 ---------------------------------------------*/
@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <algorithm>
+#include <set>
 
 typedef int status;
 typedef int KeyType;
@@ -50,9 +51,8 @@ typedef struct Trees
 /*--------------------------------------------------*/
 
 // basic operations
-status CheckFromDef(TElemType definition[]);
+status ConstructSubTree(BiTree &T, TElemType definition[], int &index, set<KeyType> &keys);
 status KeyExistInTree(BiTree T, KeyType key);
-status CreateWithDef(BiTree &T, TElemType definition[], int &index);
 BiTNode *GetParent(BiTree T, KeyType key);
 status preorderSave(BiTree T, FILE *fp);
 status visit(BiTree T);
@@ -83,7 +83,7 @@ status InvertTree(BiTree &T);
 // multiple trees operations
 int LocateTree(TREES Trees, char FileName[]);
 status AddTree(TREES &Trees, char FileName[]);
-status RemoveTree(TREES T, char ListName[]);
+status RemoveTree(TREES &T, char ListName[]);
 status SwitchTree(TREES &Trees, char ListName[]);
 void PrintTrees(TREES Trees);
 void PrintMenu(TREES &Trees);
@@ -91,78 +91,63 @@ void PrintMenu(TREES &Trees);
 /*--------------------------------------------------*/
 
 status CreateBiTree(BiTree &T, TElemType definition[])
-/*根据带空枝的二叉树先根遍历序列definition构造一棵二叉树，将根节点指针赋值给T并返回OK，
-如果有相同的关键字，返回ERROR。此题允许通过增加其它函数辅助实现本关任务*/
 {
-    // 请在这里补充代码，完成本关任务
-    /********** Begin *********/
-    if (T != NULL)
-        return INFEASIBLE;
-
-    int unique = CheckFromDef(definition);
-    if (unique != OK)
-        return ERROR;
-
     int index = 0;
-    CreateWithDef(T, definition, index);
-    return OK;
-    /********** End **********/
+    set<KeyType> keys;
+
+    return ConstructSubTree(T, definition, index, keys);
 }
 
-status CheckFromDef(TElemType definition[])
+status ConstructSubTree(BiTree &T, TElemType definition[], int &index, set<KeyType> &keys)
 {
-    // 检查定义数组中是否有重复的关键字
-    int i = 0;
-    int unique[1000] = {0};
-    while (definition[i].key != -1)
-    {
-        if (definition[i].key != 0)
-        {
-            unique[definition[i].key] += 1;
-            if (unique[definition[i].key] > 1)
-                return ERROR;
-        }
-        i++;
-    }
-    return OK;
-}
-
-status CreateWithDef(BiTree &T, TElemType definition[], int &index)
-{
+    // 空节点
     if (definition[index].key == 0)
     {
         T = NULL;
         index++;
         return OK;
     }
-    else
+    if (definition[index].key == -1)
     {
-        T = (BiTree)malloc(sizeof(BiTNode));
-        if (!T)
-            return OVERFLOW;
-        T->data = definition[index++];
-        CreateWithDef(T->lchild, definition, index);
-        CreateWithDef(T->rchild, definition, index);
+        T = NULL;
+        return OK;
     }
-    return OK;
+    // 检查 key 是否重复
+    KeyType currentKey = definition[index].key;
+    if (keys.find(currentKey) != keys.end())
+    {
+        return ERROR;
+    }
+    keys.insert(currentKey);
+
+    // 创建新节点
+    BiTNode *newNode = (BiTNode *)malloc(sizeof(BiTNode));
+    if (!newNode)
+        return OVERFLOW;
+
+    newNode->data = definition[index];
+    newNode->lchild = newNode->rchild = NULL;
+    T = newNode;
+    index++;
+
+    // 递归构造左右子树
+    status leftStatus = ConstructSubTree(T->lchild, definition, index, keys);
+    if (leftStatus != OK)
+        return leftStatus;
+    return ConstructSubTree(T->rchild, definition, index, keys);
 }
 
 status DestroyBiTree(BiTree &T)
 // 初始条件是二叉树T已存在；操作结果是销毁二叉树T；销毁了则原先所有分配的空间都销毁。
 {
-    // 请在这里补充代码，完成本关任务
-    /********** Begin *********/
-    if (T == NULL)
-        return INFEASIBLE;
-
-    DestroyBiTree(T->lchild);
-    DestroyBiTree(T->rchild);
-
-    free(T);
-    T = NULL;
-
+    if (T)
+    {
+        DestroyBiTree(T->lchild);
+        DestroyBiTree(T->rchild);
+        free(T);
+        T = NULL;
+    }
     return OK;
-    /********** End **********/
 }
 
 status ClearBiTree(BiTree &T)
@@ -367,14 +352,18 @@ status DeleteNode(BiTree &T, KeyType e)
 
     BiTree current = LocateNode(T, e);
     if (current == NULL)
+    {
+        printf("结点 %d 不存在！\n", e);
         return ERROR;
+    }
 
-    int degree = (T->lchild != NULL) + (T->rchild != NULL);
+    int degree = (current->lchild != NULL) + (current->rchild != NULL);
 
     BiTNode *parent = GetParent(T, e);
 
     if (degree == 0)
     {
+        printf("结点 %d 的度为0\n", e);
         if (current == NULL)
         {
             T = NULL;
@@ -396,6 +385,7 @@ status DeleteNode(BiTree &T, KeyType e)
     }
     else if (degree == 1)
     {
+        printf("结点 %d 的度为1\n", e);
         BiTNode *child = (current->lchild != NULL) ? current->lchild : current->rchild;
 
         if (parent == NULL)
@@ -419,6 +409,7 @@ status DeleteNode(BiTree &T, KeyType e)
     }
     else
     {
+        printf("结点 %d 的度为2\n", e);
         BiTNode *LC = current->lchild;
         BiTNode *RC = current->rchild;
 
@@ -598,23 +589,37 @@ status SaveBiTree(BiTree T, char FileName[])
 }
 
 status LoadBiTree(BiTree &T, char FileName[])
-// 读入文件FileName的结点数据，创建二叉树
 {
     FILE *fp = fopen(FileName, "r");
     if (!fp)
-        return ERROR;
-
-    TElemType definition[100];
-    int i = 0;
-    do
     {
-        fscanf(fp, "%d %s", &definition[i].key, definition[i].others);
-    } while (definition[i++].key != -1);
-
-    if (CreateBiTree(T, definition))
-        return OK;
-    else
+        printf("无法打开文件：%s\n", FileName);
         return ERROR;
+    }
+
+    // 读取文件内容
+    TElemType definition[100];
+    memset(definition, 0, sizeof(definition));
+    int defIndex = 0;
+    while (fscanf(fp, "%d %s", &definition[defIndex].key, definition[defIndex].others) == 2)
+    {
+        if (definition[defIndex].key == -1)
+            break;
+        defIndex++;
+    }
+
+    // 检查是否读取到有效数据
+    if (defIndex == 0)
+    {
+        fclose(fp);
+        return ERROR;
+    }
+
+    // 构造新树
+    status res = CreateBiTree(T, definition);
+
+    fclose(fp);
+    return res == OK ? OK : ERROR;
 }
 
 status MaxPathSum(BiTree T)
@@ -652,12 +657,14 @@ status InvertTree(BiTree &T)
     if (T == NULL)
         return INFEASIBLE;
 
+    // 递归反转左右子树
+    InvertTree(T->lchild);
+    InvertTree(T->rchild);
+
+    // 交换左右孩子指针
     BiTNode *temp = T->lchild;
     T->lchild = T->rchild;
     T->rchild = temp;
-
-    InvertTree(T->lchild);
-    InvertTree(T->rchild);
 
     return OK;
 }
@@ -682,7 +689,7 @@ status AddTree(TREES &Trees, char FileName[])
     return OK;
 }
 
-status RemoveTree(TREES T, char ListName[])
+status RemoveTree(TREES &T, char ListName[])
 {
     for (int i = 0; i < T.length; i++)
     {
@@ -697,6 +704,7 @@ status RemoveTree(TREES T, char ListName[])
             memset(T.elem[T.length - 1].name, 0, 30);
 
             T.length--;
+            T.cur_index = 0;
             return OK;
         }
     }
@@ -743,7 +751,7 @@ void PrintMenu(TREES &Trees)
     printf("---------------------------------------------------------\n");
     printf(" Menu for Binary Tree System On Binary Linked List \n");
     printf("---------------------------------------------------------\n\n");
-    printf("当前二叉树：%s\n\n", Trees.elem[Trees.cur_index].name);
+    printf("当前二叉树：%s\n", Trees.elem[Trees.cur_index].name);
     printf("Basic Operations:\n");
     printf("      1. CreateTree               2. DestoryTree         \n");
     printf("      3. ClearTree                4. BiTreeEmpty         \n");
@@ -789,9 +797,9 @@ int main()
     getchar();
 
     int op = 1;                // 菜单选项
-    int i;                     // 循环变量
     int depth;                 // 二叉树深度
-    TElemType definition[100]; // 创建二叉树的定义数组，存储先根遍历结点序列，-1表示结束
+    TElemType definition[100]; // 创建二叉树的定义数组
+    int defIndex;              // 定义数组索引
     int exist;                 // 查找结点的关键字
     int exist2;                // 赋值结点的关键字
     TElemType value;           // 赋值结点的值
@@ -820,30 +828,74 @@ int main()
 
         {
         case 1:
-            printf("请输入二叉树的带空结点的先根遍历序列，空结点用\"0 null\"表示，结束用\"-1 null\"表示：\n");
-            printf("格式：\"key others\"\n");
-            i = 0;
+        {
+            // 如果当前树存在，创建失败
+            if (Trees.elem[Trees.cur_index].root != NULL)
+            {
+                printf("当前二叉树已存在，创建失败！\n");
+                break;
+            }
+
+            // 初始化 definition 数组
+            defIndex = 0;
+            memset(definition, 0, sizeof(definition));
+
+            int key;
+            char others[30];
+
+            printf("请输入二叉树的先序遍历序列，格式为：key others，空节点用 0 null 表示，以 -1 null 结束。\n");
+
             while (1)
             {
-                scanf("%d %s", &definition[i].key, definition[i].others);
-                if (definition[i].key == -1)
+                if (scanf("%d", &key) != 1)
+                {
+                    printf("输入错误，请重新输入。\n");
+                    continue;
+                }
+
+                if (key == -1)
+                {
+                    // 读取最后一个 "null"，结束输入
+                    scanf("%s", others);
                     break;
-                i++;
+                }
+
+                definition[defIndex].key = key;
+
+                // 读取 others
+                if (scanf("%s", others) != 1)
+                {
+                    printf("输入错误，请重新输入。\n");
+                    continue;
+                }
+
+                strncpy(definition[defIndex].others, others, 29);
+                definition[defIndex].others[29] = '\0';
+                defIndex++;
             }
-            if (CreateBiTree(Trees.elem[Trees.cur_index].root, definition) == OK)
+
+            // 构造新树
+            status res = CreateBiTree(Trees.elem[Trees.cur_index].root, definition);
+
+            if (res == OK)
             {
-                printf("二叉树创建成功！\n");
-                printf("二叉树的先序遍历结果为：\n");
-                PreOrderTraverse(Trees.elem[Trees.cur_index].root);
-                printf("二叉树的中序遍历结果为：\n");
-                InOrderTraverse(Trees.elem[Trees.cur_index].root);
+                printf("树创建成功。\n");
             }
             else
-                printf("二叉树创建失败，可能是内存不足或关键字重复！\n");
+            {
+                printf("树创建失败，可能原因：重复 key 或内存不足。\n");
+            }
 
             break;
+        }
 
         case 2:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，销毁失败！\n");
+                break;
+            }
+
             if (DestroyBiTree(Trees.elem[Trees.cur_index].root) == OK)
                 printf("二叉树销毁成功！\n");
             else
@@ -875,6 +927,12 @@ int main()
             break;
 
         case 6:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法查找结点！\n");
+                break;
+            }
+
             printf("请输入要查找的结点的关键字：\n");
             scanf("%d", &exist);
             node = LocateNode(Trees.elem[Trees.cur_index].root, exist);
@@ -885,6 +943,12 @@ int main()
             break;
 
         case 7:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法赋值！\n");
+                break;
+            }
+
             printf("请输入要赋值的结点的关键字：\n");
             scanf("%d", &exist2);
             printf("请输入新的结点信息（格式：\"key others\"）：\n");
@@ -892,15 +956,19 @@ int main()
             if (Assign(Trees.elem[Trees.cur_index].root, exist2, value) == OK)
             {
                 printf("赋值成功！\n");
-                BiTNode *assignedNode = LocateNode(Trees.elem[Trees.cur_index].root, exist2);
-                printf("赋值后的结点信息为：%d %s\n", assignedNode->data.key, assignedNode->data.others);
             }
             else
                 printf("赋值失败，结点不存在或关键字重复！\n");
             break;
 
         case 8:
-            printf("请输入要查找的结点的关键字：\n");
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法查找兄弟结点！\n");
+                break;
+            }
+
+            printf("请输入要查找兄弟的结点的关键字：\n");
             scanf("%d", &exist);
             sibling = GetSibling(Trees.elem[Trees.cur_index].root, exist);
             if (sibling != NULL)
@@ -910,9 +978,15 @@ int main()
             break;
 
         case 9:
+            if (Trees.elem[Trees.cur_index].root == NULL && LR != -1)
+            {
+                printf("当前二叉树不存在，无法插入结点！\n");
+                break;
+            }
+
             printf("请输入要插入的位置的关键字：\n");
             scanf("%d", &exist);
-            printf("请输入插入的结点的信息（格式：\"key others\"）：\n");
+            printf("请输入插入的新结点的信息（格式：\"key others\"）：\n");
             scanf("%d %s", &c.key, c.others);
             printf("请输入插入的方式（0表示左子树，1表示右子树，-1表示根结点）：\n");
             scanf("%d", &LR);
@@ -926,6 +1000,11 @@ int main()
             break;
 
         case 10:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法删除结点！\n");
+                break;
+            }
             printf("请输入要删除的结点的关键字：\n");
             scanf("%d", &exist);
             if (DeleteNode(Trees.elem[Trees.cur_index].root, exist) == OK)
@@ -983,6 +1062,12 @@ int main()
             break;
 
         case 15:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法计算最大路径和！\n");
+                break;
+            }
+
             if (BiTreeEmpty(Trees.elem[Trees.cur_index].root) == TRUE)
                 printf("二叉树为空！\n");
             else
@@ -993,6 +1078,12 @@ int main()
             break;
 
         case 16:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法反转！\n");
+                break;
+            }
+
             if (InvertTree(Trees.elem[Trees.cur_index].root) == OK)
                 printf("二叉树反转成功！\n");
             else
@@ -1010,8 +1101,11 @@ int main()
             break;
 
         case 18:
-            if (BiTreeEmpty(Trees.elem[Trees.cur_index].root) == TRUE)
-                printf("二叉树为空！\n");
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法保存！\n");
+                break;
+            }
             else
             {
                 printf("请输入要保存的文件名：\n");
@@ -1024,6 +1118,12 @@ int main()
             break;
 
         case 19:
+            if (Trees.elem[Trees.cur_index].root == NULL)
+            {
+                printf("当前二叉树不存在，无法查找最近公共祖先！\n");
+                break;
+            }
+
             printf("请输入要查找的两个结点的关键字：\n");
             scanf("%d %d", &e1, &e2);
             lca = LowestCommonAncestor(Trees.elem[Trees.cur_index].root, e1, e2);
@@ -1087,3 +1187,13 @@ int main()
 
     return 0;
 }
+
+/*
+
+         1(root)
+       /        \
+   2(a)        4(c)
+      \           \
+       3(b)       5(d)
+
+*/
