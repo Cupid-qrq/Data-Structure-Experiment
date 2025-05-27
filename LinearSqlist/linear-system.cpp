@@ -159,7 +159,7 @@ status PriorElem(SqList &L, ElemType e, ElemType &pre)
     {
         if (e == L.elem[i] && i == 0)
         {
-            printf("è¯¥å…ƒç´ ä¸ºé¦–å…ƒç´ ï¼Œæ— å‰é©±å…ƒç´ ï¼\n");
+            printf("¸ÃÔªËØÎªÊ×ÔªËØ£¬ÎŞÇ°ÇıÔªËØ£¡\n");
             return ERROR;
         }
 
@@ -418,7 +418,7 @@ int LocateList(LISTS Lists, char ListName[])
 
 void PrintLists(LISTS Lists)
 {
-    printf("å½“å‰çº¿æ€§è¡¨åˆ—è¡¨ï¼š\n");
+    printf("µ±Ç°ÏßĞÔ±íÁĞ±í£º\n");
     for (int i = 0; i < Lists.length; i++)
     {
         printf("%d. %s\n", i + 1, Lists.elem[i].name);
@@ -431,7 +431,7 @@ void printMenu(LISTS &Lists)
     printf("--------------------------------------------------\n");
     printf("   Menu for Linear Table On Sequence Structure \n");
     printf("--------------------------------------------------\n");
-    printf("å½“å‰æ“ä½œè¡¨ä¸ºï¼š%s\n", Lists.elem[Lists.cur_index].name);
+    printf("µ±Ç°²Ù×÷±íÎª£º%s\n", Lists.elem[Lists.cur_index].name);
     printf("        1.  InitList       11. ListDelete   \n");
     printf("        2.  DestroyList    12. ListTraverse \n");
     printf("        3.  ClearList      13. MaxSubArray  \n");
@@ -445,7 +445,7 @@ void printMenu(LISTS &Lists)
     printf("       21.  SwitchList     22. PrintLists    \n");
     printf("        0.Exit    \n");
     printf("--------------------------------------------------\n");
-    printf("è¯·è¾“å…¥åŠŸèƒ½åºå·[0~20]:");
+    printf("ÇëÊäÈë¹¦ÄÜĞòºÅ[0~20]:");
 }
 
 int main()
@@ -457,18 +457,18 @@ int main()
     char firstname[30];
     system("cls");
     printf("--------------------------------------------------\n");
-    printf("è¿™æ˜¯ä¸€ä¸ªå¤šçº¿æ€§è¡¨ç³»ç»Ÿï¼Œå¯ä»¥å¯¹å•ä¸ªæˆ–å¤šä¸ªçº¿æ€§è¡¨è¿›è¡Œæ“ä½œ\n");
-    printf("Authorï¼šHUST Cupid-qrq\n");
+    printf("ÕâÊÇÒ»¸ö¶àÏßĞÔ±íÏµÍ³£¬¿ÉÒÔ¶Ôµ¥¸ö»ò¶à¸öÏßĞÔ±í½øĞĞ²Ù×÷\n");
+    printf("Author£ºHUST Cupid-qrq\n");
     printf("--------------------------------------------------\n");
-    printf("åœ¨å¼€å§‹ä¹‹å‰ï¼Œè¯·å…ˆè¾“å…¥ç¬¬ä¸€ä¸ªçº¿æ€§è¡¨çš„åç§°ï¼š\n");
+    printf("ÔÚ¿ªÊ¼Ö®Ç°£¬ÇëÏÈÊäÈëµÚÒ»¸öÏßĞÔ±íµÄÃû³Æ£º\n");
     if (scanf("%s", firstname) != 1)
     {
-        printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+        printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
         scanf("%s", firstname);
     }
-    printf("è¾“å…¥æˆåŠŸï¼Œç¬¬ä¸€ä¸ªçº¿æ€§è¡¨çš„åç§°æ˜¯ï¼š%s\n", firstname);
+    printf("ÊäÈë³É¹¦£¬µÚÒ»¸öÏßĞÔ±íµÄÃû³ÆÊÇ£º%s\n", firstname);
     strcpy(Lists.elem[0].name, firstname);
-    printf("æ¥ä¸‹æ¥ï¼Œè¿›å…¥èœå•ç•Œé¢ï¼ŒæŒ‰ä»»æ„é”®ç»§ç»­ï¼š\n");
+    printf("½ÓÏÂÀ´£¬½øÈë²Ëµ¥½çÃæ£¬°´ÈÎÒâ¼ü¼ÌĞø£º\n");
     getchar();
     getchar();
 
@@ -488,203 +488,228 @@ int main()
         {
         case 1:
             if (InitList(Lists.elem[Lists.cur_index]) == OK)
-                printf("çº¿æ€§è¡¨åˆå§‹åŒ–æˆåŠŸ!\n");
+                printf("ÏßĞÔ±í³õÊ¼»¯³É¹¦!\n");
             else
-                printf("çº¿æ€§è¡¨å·²å­˜åœ¨æˆ–åˆå§‹åŒ–å¤±è´¥!\n");
+                printf("ÏßĞÔ±íÒÑ´æÔÚ»ò³õÊ¼»¯Ê§°Ü!\n");
             break;
 
         case 2:
             if (DestroyList(Lists.elem[Lists.cur_index]) == OK)
-                printf("è¡¨å·²é”€æ¯ï¼\n");
+                printf("±íÒÑÏú»Ù£¡\n");
             else
-                printf("è¡¨ä¸å­˜åœ¨ï¼Œé”€æ¯å¤±è´¥ï¼\n");
+                printf("±í²»´æÔÚ£¬Ïú»ÙÊ§°Ü£¡\n");
             break;
 
         case 3:
             if (ClearList(Lists.elem[Lists.cur_index]) == OK)
-                printf("è¡¨å·²æ¸…ç©ºï¼\n");
+                printf("±íÒÑÇå¿Õ£¡\n");
             else
-                printf("æ¸…ç©ºå¤±è´¥ï¼Œè¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("Çå¿ÕÊ§°Ü£¬±í²»´æÔÚ£¡\n");
             break;
 
         case 4:
             if (ListEmpty(Lists.elem[Lists.cur_index]) == TRUE)
-                printf("è¡¨ä¸ºç©ºï¼\n");
+                printf("±íÎª¿Õ£¡\n");
             else if (ListEmpty(Lists.elem[Lists.cur_index]) == FALSE)
-                printf("è¡¨éç©ºï¼\n");
+                printf("±í·Ç¿Õ£¡\n");
             else
-                printf("è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             break;
 
         case 5:
             if (ListLength(Lists.elem[Lists.cur_index]) != INFEASIBLE)
-                printf("è¡¨é•¿åº¦ä¸ºï¼š%d\n", ListLength(Lists.elem[Lists.cur_index]));
+                printf("±í³¤¶ÈÎª£º%d\n", ListLength(Lists.elem[Lists.cur_index]));
             else
-                printf("è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             break;
 
         case 6:
-            printf("è¯·è¾“å…¥è¦è·å–çš„å…ƒç´ ä½ç½®ï¼š");
+            printf("ÇëÊäÈëÒª»ñÈ¡µÄÔªËØÎ»ÖÃ£º");
             scanf("%d", &i);
             if (GetElem(Lists.elem[Lists.cur_index], i, e) == OK)
-                printf("ç¬¬ %d ä¸ªå…ƒç´ ä¸ºï¼š%d\n", i, e);
+                printf("µÚ %d ¸öÔªËØÎª£º%d\n", i, e);
+            else if (i < 1 || i > Lists.elem[Lists.cur_index].length)
+                printf("Î»ÖÃ·Ç·¨£¡\n");
             else
-                printf("ä½ç½®éæ³•æˆ–è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             break;
 
         case 7:
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„å…ƒç´ å€¼ï¼š");
+            printf("ÇëÊäÈëÒª²éÕÒµÄÔªËØÖµ£º");
             scanf("%d", &e);
             i = LocateElem(Lists.elem[Lists.cur_index], e);
             if (i != ERROR && i != INFEASIBLE)
-                printf("å…ƒç´  %d çš„ä½ç½®ä¸ºï¼š%d\n", e, i);
+                printf("ÔªËØ %d µÄÎ»ÖÃÎª£º%d\n", e, i);
             else if (i == INFEASIBLE)
-                printf("è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             else
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("²éÕÒÊ§°Ü£¡\n");
             break;
 
         case 8:
-            printf("è¯·è¾“å…¥å½“å‰å…ƒç´ å€¼ï¼š");
+            if (Lists.elem[Lists.cur_index].length == 0)
+            {
+                printf("±í²»´æÔÚ£¡\n");
+                break;
+            }
+            printf("ÇëÊäÈëµ±Ç°ÔªËØÖµ£º");
             scanf("%d", &cur_e);
             if (PriorElem(Lists.elem[Lists.cur_index], cur_e, pre_e) == OK)
-                printf("å‰é©±å…ƒç´ ä¸ºï¼š%d\n", pre_e);
+                printf("Ç°ÇıÔªËØÎª£º%d\n", pre_e);
             else
-                printf("å¯»æ‰¾å‰é©±å¤±è´¥ï¼\n");
+                printf("Ñ°ÕÒÇ°ÇıÊ§°Ü£¡\n");
             break;
 
         case 9:
-            printf("è¯·è¾“å…¥å½“å‰å…ƒç´ å€¼ï¼š");
+            if (Lists.elem[Lists.cur_index].length == 0)
+            {
+                printf("±í²»´æÔÚ£¡\n");
+                break;
+            }
+            printf("ÇëÊäÈëµ±Ç°ÔªËØÖµ£º");
             scanf("%d", &cur_e);
             if (NextElem(Lists.elem[Lists.cur_index], cur_e, next_e) == OK)
-                printf("åç»§å…ƒç´ ä¸ºï¼š%d\n", next_e);
+                printf("ºó¼ÌÔªËØÎª£º%d\n", next_e);
+            else if (cur_e == Lists.elem[Lists.cur_index].elem[Lists.elem[Lists.cur_index].length - 1])
+                printf("¸ÃÔªËØÎªÄ©Î²ÔªËØ£¬ÎŞºó¼ÌÔªËØ£¡\n");
             else
-                printf("æ— åç»§å…ƒç´ æˆ–è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("Ñ°ÕÒºó¼ÌÊ§°Ü£¡\n");
+
             break;
 
         case 10:
-            printf("è¯·è¾“å…¥æ’å…¥ä½ç½®å’Œå…ƒç´ å€¼ï¼š");
+            if (Lists.elem[Lists.cur_index].elem == NULL)
+            {
+                printf("±íÎ´³õÊ¼»¯£¡\n");
+                break;
+            }
+            printf("ÇëÊäÈë²åÈëÎ»ÖÃºÍÔªËØÖµ£º");
             scanf("%d%d", &i, &e);
             if (ListInsert(Lists.elem[Lists.cur_index], i, e) == OK)
-                printf("æ’å…¥æˆåŠŸï¼\n");
+                printf("²åÈë³É¹¦£¡\n");
             else
-                printf("æ’å…¥å¤±è´¥ï¼Œä½ç½®éæ³•æˆ–è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("²åÈëÊ§°Ü£¬Î»ÖÃ·Ç·¨£¡\n");
             break;
 
         case 11:
-            printf("è¯·è¾“å…¥è¦åˆ é™¤çš„ä½ç½®ï¼š");
+            if (Lists.elem[Lists.cur_index].elem == NULL)
+            {
+                printf("±íÎ´³õÊ¼»¯£¡\n");
+                break;
+            }
+            printf("ÇëÊäÈëÒªÉ¾³ıµÄÎ»ÖÃ£º");
             scanf("%d", &i);
             if (ListDelete(Lists.elem[Lists.cur_index], i, e) == OK)
-                printf("åˆ é™¤æˆåŠŸï¼Œåˆ é™¤å…ƒç´ ä¸ºï¼š%d\n", e);
+                printf("É¾³ı³É¹¦£¬É¾³ıÔªËØÎª£º%d\n", e);
             else
-                printf("åˆ é™¤å¤±è´¥ï¼Œä½ç½®éæ³•æˆ–è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("É¾³ıÊ§°Ü£¬Î»ÖÃ·Ç·¨£¡\n");
             break;
 
         case 12:
-            printf("å½“å‰è¡¨å†…å®¹ä¸ºï¼š\n");
+            printf("µ±Ç°±íÄÚÈİÎª£º\n");
             if (ListTraverse(Lists.elem[Lists.cur_index]) == INFEASIBLE)
-                printf("è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             break;
 
         case 13:
             Maxsub = MaxSubArray(Lists.elem[Lists.cur_index]);
             if (Maxsub != INFEASIBLE)
-                printf("æœ€å¤§å­æ•°ç»„å’Œä¸ºï¼š%d\n", Maxsub);
+                printf("×î´ó×ÓÊı×éºÍÎª£º%d\n", Maxsub);
             else
-                printf("è¡¨ä¸å­˜åœ¨æˆ–éæ³•ï¼\n");
+                printf("±í²»´æÔÚ»ò·Ç·¨£¡\n");
             break;
 
         case 14:
-            printf("è¯·è¾“å…¥è¦æŸ¥è¯¢çš„å­æ•°ç»„å’Œçš„å¤§å°ï¼š");
+            printf("ÇëÊäÈëÒª²éÑ¯µÄ×ÓÊı×éºÍµÄ´óĞ¡£º");
             scanf("%d", &k);
             cnt = SubArrayNum(Lists.elem[Lists.cur_index], k);
             if (cnt != INFEASIBLE)
-                printf("å’Œä¸º%dçš„å­æ•°ç»„ä¸ªæ•°: %d\n", k, cnt);
+                printf("ºÍÎª%dµÄ×ÓÊı×é¸öÊı: %d\n", k, cnt);
             else
-                printf("è¡¨ä¸å­˜åœ¨æˆ–éæ³•ï¼\n");
+                printf("±í²»´æÔÚ»ò·Ç·¨£¡\n");
             break;
 
         case 15:
             if (SortList(Lists.elem[Lists.cur_index]) == OK)
-                printf("çº¿æ€§è¡¨å·²æ’åºæˆåŠŸï¼\n");
+                printf("ÏßĞÔ±íÒÑÅÅĞò³É¹¦£¡\n");
             else
-                printf("è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±í²»´æÔÚ£¡\n");
             break;
 
         case 16:
-            printf("è¯·è¾“å…¥æ–‡ä»¶åï¼š");
+            printf("ÇëÊäÈëÎÄ¼şÃû£º");
             scanf("%s", filename);
             if (SaveList(Lists.elem[Lists.cur_index], filename) == OK)
-                printf("ä¿å­˜æˆåŠŸï¼\n");
+                printf("±£´æ³É¹¦£¡\n");
             else
-                printf("ä¿å­˜å¤±è´¥æˆ–è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("±£´æÊ§°Ü»ò±í²»´æÔÚ£¡\n");
             break;
 
         case 17:
-            printf("è¯·è¾“å…¥æ–‡ä»¶åï¼š");
+            printf("ÇëÊäÈëÎÄ¼şÃû£º");
             scanf("%s", filename);
             if (LoadList(Lists.elem[Lists.cur_index], filename) == OK)
-                printf("åŠ è½½æˆåŠŸï¼\n");
+                printf("¼ÓÔØ³É¹¦£¡\n");
             else
-                printf("åŠ è½½å¤±è´¥æˆ–è¡¨å·²å­˜åœ¨ï¼\n");
+                printf("¼ÓÔØÊ§°Ü»ò±íÒÑ´æÔÚ£¡\n");
             break;
 
         case 18:
-            printf("è¯·è¾“å…¥è¦æ·»åŠ çš„è¡¨åï¼š");
+            printf("ÇëÊäÈëÒªÌí¼ÓµÄ±íÃû£º");
             scanf("%s", listname);
             if (AddList(Lists, listname) == OK)
-                printf("æ·»åŠ æˆåŠŸï¼\n");
+                printf("Ìí¼Ó³É¹¦£¡\n");
             else
-                printf("æ·»åŠ å¤±è´¥ï¼Œè¡¨å·²å­˜åœ¨æˆ–å†…å­˜ä¸è¶³ï¼\n");
+                printf("Ìí¼ÓÊ§°Ü£¬±íÒÑ´æÔÚ»òÄÚ´æ²»×ã£¡\n");
             break;
 
         case 19:
-            printf("è¯·è¾“å…¥è¦åˆ é™¤çš„è¡¨åï¼š");
+            printf("ÇëÊäÈëÒªÉ¾³ıµÄ±íÃû£º");
             scanf("%s", listname);
             if (RemoveList(Lists, listname) == OK)
-                printf("åˆ é™¤æˆåŠŸï¼\n");
+                printf("É¾³ı³É¹¦£¡\n");
             else
-                printf("åˆ é™¤å¤±è´¥ï¼Œè¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("É¾³ıÊ§°Ü£¬±í²»´æÔÚ£¡\n");
             break;
 
         case 20:
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„è¡¨åï¼š");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ±íÃû£º");
             scanf("%s", listname);
             i = LocateList(Lists, listname);
             if (i != ERROR)
-                printf("è¡¨ %s çš„ä½ç½®ä¸ºï¼š%d\n", listname, i);
+                printf("±í %s µÄÎ»ÖÃÎª£º%d\n", listname, i);
             else
-                printf("è¡¨æœªæ‰¾åˆ°ï¼\n");
+                printf("±íÎ´ÕÒµ½£¡\n");
             break;
 
         case 21:
-            printf("è¯·è¾“å…¥è¦åˆ‡æ¢åˆ°çš„è¡¨åï¼š");
+            printf("ÇëÊäÈëÒªÇĞ»»µ½µÄ±íÃû£º");
             scanf("%s", listname);
             i = LocateList(Lists, listname);
             if (i != ERROR)
             {
                 Lists.cur_index = i - 1;
-                printf("åˆ‡æ¢æˆåŠŸï¼Œå½“å‰æ“ä½œè¡¨ä¸ºï¼š%s\n", Lists.elem[Lists.cur_index].name);
+                printf("ÇĞ»»³É¹¦£¬µ±Ç°²Ù×÷±íÎª£º%s\n", Lists.elem[Lists.cur_index].name);
             }
             else
-                printf("è¾“å…¥çš„è¡¨ä¸å­˜åœ¨ï¼\n");
+                printf("ÊäÈëµÄ±í²»´æÔÚ£¡\n");
             break;
 
         case 22:
             PrintLists(Lists);
             break;
         case 0:
-            printf("é€€å‡ºç¨‹åºï¼\n");
+            printf("ÍË³ö³ÌĞò£¡\n");
             break;
 
         default:
-            printf("æ— æ•ˆæ“ä½œï¼Œè¯·é‡æ–°è¾“å…¥ï¼\n");
+            printf("ÎŞĞ§²Ù×÷£¬ÇëÖØĞÂÊäÈë£¡\n");
             break;
         }
 
         if (op != 0)
         {
-            printf("æŒ‰å›è½¦é”®ç»§ç»­...\n");
+            printf("°´»Ø³µ¼ü¼ÌĞø...\n");
             getchar();
             getchar();
         }

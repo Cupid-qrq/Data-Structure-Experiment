@@ -21,3 +21,8 @@
 - The binary tree system has been fully modified and debugged,and known problems in four system have been fixed, and the system's stability and performance have been enhanced.
 - Using more advanced C++ features, such as STL and smart pointers, to improve code quality and maintainability.
 - So far, all data structure systems have been completed.The experiment report written by *LaTeX* will be submitted soon. 
+
+### 5.27 update log
+- Improved the code quality of the graph management system, fixed some bugs, and optimized the code structure.
+- Added the experiment report written in *LaTeX* format, which includes detailed explanations of the design and implementation of each system.
+- The whole project has been thoroughly finished.

@@ -31,30 +31,30 @@ typedef enum
     DN,
     UDG,
     UDN
-} GraphKind; // æœ¬ç¨‹åºä»¥æ— å‘å›¾ä¸ºä¾‹
+} GraphKind; // ±¾³ÌĞòÒÔÎŞÏòÍ¼ÎªÀı
 
 typedef struct
 {
     KeyType key;
     char others[20];
-} VertexType; // é¡¶ç‚¹ç±»å‹å®šä¹‰
+} VertexType; // ¶¥µãÀàĞÍ¶¨Òå
 
 typedef struct ArcNode
-{                            // é‚»æ¥è¡¨ç»“ç‚¹ç±»å‹å®šä¹‰
-    int adjvex;              // é¡¶ç‚¹ä½ç½®ç¼–å·
-    struct ArcNode *nextarc; // ä¸‹ä¸€ä¸ªç»“ç‚¹æŒ‡é’ˆ
+{                            // ÁÚ½Ó±í½áµãÀàĞÍ¶¨Òå
+    int adjvex;              // ¶¥µãÎ»ÖÃ±àºÅ
+    struct ArcNode *nextarc; // ÏÂÒ»¸ö½áµãÖ¸Õë
 } ArcNode;
 typedef struct VNode
-{                      // å¤´ç»“ç‚¹åŠå…¶æ•°ç»„ç±»å‹å®šä¹‰
-    VertexType data;   // é¡¶ç‚¹ä¿¡æ¯
-    ArcNode *firstarc; // æŒ‡å‘ç¬¬ä¸€æ¡å¼§
+{                      // Í·½áµã¼°ÆäÊı×éÀàĞÍ¶¨Òå
+    VertexType data;   // ¶¥µãĞÅÏ¢
+    ArcNode *firstarc; // Ö¸ÏòµÚÒ»Ìõ»¡
 } VNode, AdjList[MAX_VERTEX_NUM];
 typedef struct
-{                       // é‚»æ¥è¡¨çš„ç±»å‹å®šä¹‰
-    AdjList vertices;   // å¤´ç»“ç‚¹æ•°ç»„
-    int vexnum, arcnum; // é¡¶ç‚¹æ•°ã€å¼§æ•°
-    GraphKind kind;     // å›¾çš„ç±»å‹
-    char name[30];      // å›¾çš„åç§°
+{                       // ÁÚ½Ó±íµÄÀàĞÍ¶¨Òå
+    AdjList vertices;   // Í·½áµãÊı×é
+    int vexnum, arcnum; // ¶¥µãÊı¡¢»¡Êı
+    GraphKind kind;     // Í¼µÄÀàĞÍ
+    char name[30];      // Í¼µÄÃû³Æ
 } ALGraph;
 
 typedef struct
@@ -124,7 +124,7 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
 {
     // G.kind = UDG;
 
-    // ç®—å‡ºé¡¶ç‚¹æ•°å’Œè¾¹æ•°
+    // Ëã³ö¶¥µãÊıºÍ±ßÊı
     G.vexnum = 0;
     G.arcnum = 0;
     int i = 0, j = 0;
@@ -142,7 +142,7 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
     G.vexnum = i;
     G.arcnum = j;
 
-    // åˆ¤æ–­é¡¶ç‚¹æ•°å’Œè¾¹æ•°æ˜¯å¦è¶…è¿‡æœ€å¤§å€¼
+    // ÅĞ¶Ï¶¥µãÊıºÍ±ßÊıÊÇ·ñ³¬¹ı×î´óÖµ
     if (G.arcnum > MAX_VERTEX_NUM * (MAX_VERTEX_NUM - 1) / 2)
         return ERROR;
     if (G.vexnum > MAX_VERTEX_NUM)
@@ -150,7 +150,7 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
     if (isKeyTypeUnique(V) == ERROR)
         return ERROR;
 
-    // åˆ›å»ºå›¾
+    // ´´½¨Í¼
     for (int i = 0; i < G.vexnum; i++)
     {
         G.vertices[i].data = V[i];
@@ -162,16 +162,16 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
         int v1 = LocateVertex(G, VR[i][0]);
         int v2 = LocateVertex(G, VR[i][1]);
 
-        // åˆ¤æ–­è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹æ˜¯å¦åœ¨å›¾ä¸­
+        // ÅĞ¶Ï±ßµÄÁ½¸ö¶¥µãÊÇ·ñÔÚÍ¼ÖĞ
         if (v1 == -1 || v2 == -1)
             return ERROR;
-        // åˆ¤æ–­è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹æ˜¯å¦ç›¸åŒï¼Œå¦‚æœç›¸åŒåˆ™è·³è¿‡
+        // ÅĞ¶Ï±ßµÄÁ½¸ö¶¥µãÊÇ·ñÏàÍ¬£¬Èç¹ûÏàÍ¬ÔòÌø¹ı
         if (v1 == v2)
         {
             G.arcnum--;
             continue;
         }
-        // åˆ¤æ–­è¾¹çš„ä¸¤ä¸ªé¡¶ç‚¹æ˜¯å¦å·²ç»å­˜åœ¨
+        // ÅĞ¶Ï±ßµÄÁ½¸ö¶¥µãÊÇ·ñÒÑ¾­´æÔÚ
         int flag = 1;
         if (G.vertices[v1].firstarc != NULL)
         {
@@ -189,7 +189,7 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
             continue;
         }
 
-        // åœ¨v1çš„é‚»æ¥è¡¨ä¸­æ’å…¥v2
+        // ÔÚv1µÄÁÚ½Ó±íÖĞ²åÈëv2
         ArcNode *p = (ArcNode *)malloc(sizeof(ArcNode));
         if (!p)
             return OVERFLOW;
@@ -197,7 +197,7 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
         p->nextarc = G.vertices[v1].firstarc;
         G.vertices[v1].firstarc = p;
 
-        // åœ¨v2çš„é‚»æ¥è¡¨ä¸­æ’å…¥v1
+        // ÔÚv2µÄÁÚ½Ó±íÖĞ²åÈëv1
         ArcNode *q = (ArcNode *)malloc(sizeof(ArcNode));
         if (!q)
             return OVERFLOW;
@@ -210,9 +210,9 @@ status CreateGraph(ALGraph &G, VertexType V[], KeyType VR[][2])
 }
 
 status DestroyGraph(ALGraph &G)
-/*é”€æ¯æ— å‘å›¾G,åˆ é™¤Gçš„å…¨éƒ¨é¡¶ç‚¹å’Œè¾¹*/
+/*Ïú»ÙÎŞÏòÍ¼G,É¾³ıGµÄÈ«²¿¶¥µãºÍ±ß*/
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     for (int i = 0; i < G.vexnum; i++)
     {
@@ -234,9 +234,9 @@ status DestroyGraph(ALGraph &G)
 }
 
 int LocateVertex(ALGraph G, KeyType u)
-// æ ¹æ®uåœ¨å›¾Gä¸­æŸ¥æ‰¾é¡¶ç‚¹ï¼ŒæŸ¥æ‰¾æˆåŠŸè¿”å›ä½åºï¼Œå¦åˆ™è¿”å›-1ï¼›
+// ¸ù¾İuÔÚÍ¼GÖĞ²éÕÒ¶¥µã£¬²éÕÒ³É¹¦·µ»ØÎ»Ğò£¬·ñÔò·µ»Ø-1£»
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     for (int i = 0; i < G.vexnum; i++)
     {
@@ -263,10 +263,10 @@ status isKeyTypeUniqueInAdjlist(AdjList list, int len)
 }
 
 status PutVex(ALGraph &G, KeyType u, VertexType value)
-// æ ¹æ®uåœ¨å›¾Gä¸­æŸ¥æ‰¾é¡¶ç‚¹ï¼ŒæŸ¥æ‰¾æˆåŠŸå°†è¯¥é¡¶ç‚¹å€¼ä¿®æ”¹æˆvalueï¼Œè¿”å›OKï¼›
-// å¦‚æœæŸ¥æ‰¾å¤±è´¥æˆ–å…³é”®å­—ä¸å”¯ä¸€ï¼Œè¿”å›ERROR
+// ¸ù¾İuÔÚÍ¼GÖĞ²éÕÒ¶¥µã£¬²éÕÒ³É¹¦½«¸Ã¶¥µãÖµĞŞ¸Ä³Évalue£¬·µ»ØOK£»
+// Èç¹û²éÕÒÊ§°Ü»ò¹Ø¼ü×Ö²»Î¨Ò»£¬·µ»ØERROR
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
 
     for (int i = 0; i < G.vexnum; i++)
@@ -292,11 +292,17 @@ status PutVex(ALGraph &G, KeyType u, VertexType value)
 }
 
 int FirstAdjVex(ALGraph G, KeyType u)
-// æ ¹æ®uåœ¨å›¾Gä¸­æŸ¥æ‰¾é¡¶ç‚¹ï¼ŒæŸ¥æ‰¾æˆåŠŸè¿”å›é¡¶ç‚¹uçš„ç¬¬ä¸€é‚»æ¥é¡¶ç‚¹ä½åºï¼Œå¦åˆ™è¿”å›-1ï¼›
+// ¸ù¾İuÔÚÍ¼GÖĞ²éÕÒ¶¥µã£¬²éÕÒ³É¹¦·µ»Ø¶¥µãuµÄµÚÒ»ÁÚ½Ó¶¥µãÎ»Ğò£¬·ñÔò·µ»Ø-1£»
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
+
     int i = LocateVertex(G, u);
+    if (i == -1)
+    {
+
+        return -1;
+    }
     ArcNode *p = G.vertices[i].firstarc;
     if (p)
     {
@@ -308,14 +314,17 @@ int FirstAdjVex(ALGraph G, KeyType u)
 }
 
 int NextAdjVex(ALGraph G, KeyType v, KeyType w)
-// vå¯¹åº”Gçš„ä¸€ä¸ªé¡¶ç‚¹,wå¯¹åº”vçš„é‚»æ¥é¡¶ç‚¹ï¼›æ“ä½œç»“æœæ˜¯è¿”å›vçš„ï¼ˆç›¸å¯¹äºwï¼‰ä¸‹ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹çš„ä½åºï¼›å¦‚æœwæ˜¯æœ€åä¸€ä¸ªé‚»æ¥é¡¶ç‚¹ï¼Œæˆ–vã€wå¯¹åº”é¡¶ç‚¹ä¸å­˜åœ¨ï¼Œåˆ™è¿”å›-1ã€‚
+// v¶ÔÓ¦GµÄÒ»¸ö¶¥µã,w¶ÔÓ¦vµÄÁÚ½Ó¶¥µã£»²Ù×÷½á¹ûÊÇ·µ»ØvµÄ£¨Ïà¶ÔÓÚw£©ÏÂÒ»¸öÁÚ½Ó¶¥µãµÄÎ»Ğò£»Èç¹ûwÊÇ×îºóÒ»¸öÁÚ½Ó¶¥µã£¬»òv¡¢w¶ÔÓ¦¶¥µã²»´æÔÚ£¬Ôò·µ»Ø-1¡£
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     int n = LocateVertex(G, v);
     int m = LocateVertex(G, w);
     if (n == -1 || m == -1)
+    {
+        printf("¶¥µã²»´æÔÚ\n");
         return -1;
+    }
 
     ArcNode *p = G.vertices[n].firstarc;
     while (p && p->adjvex != m)
@@ -323,28 +332,39 @@ int NextAdjVex(ALGraph G, KeyType v, KeyType w)
         p = p->nextarc;
     }
 
+    if (p == NULL)
+    {
+        printf("¶¥µã %d ²»ÊÇ¶¥µã %d µÄÁÚ½Ó¶¥µã\n", w, v);
+        return -1;
+    }
+
     if (p && p->nextarc)
     {
         return p->nextarc->adjvex;
     }
     else
+    {
+        printf("¶¥µã %d ÊÇ¶¥µã %d µÄ×îºóÒ»¸öÁÚ½Ó¶¥µã,Ã»ÓĞÏÂÒ»¸öÁÚ½Ó¶¥µã\n", w, v);
         return -1;
-
+    }
     /********** End **********/
 }
 
 status InsertVex(ALGraph &G, VertexType v)
-// åœ¨å›¾Gä¸­æ’å…¥é¡¶ç‚¹vï¼ŒæˆåŠŸè¿”å›OK,å¦åˆ™è¿”å›ERROR
+// ÔÚÍ¼GÖĞ²åÈë¶¥µãv£¬³É¹¦·µ»ØOK,·ñÔò·µ»ØERROR
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     if (G.vexnum == MAX_VERTEX_NUM)
+    {
+        printf("Í¼µÄ¶¥µãÊıÒÑ´ïÉÏÏŞ£¬ÎŞ·¨²åÈëĞÂ¶¥µã\n");
         return ERROR;
-
+    }
     for (int i = 0; i < G.vexnum; i++)
     {
         if (G.vertices[i].data.key == v.key || strcmp(G.vertices[i].data.others, v.others) == 0)
         {
+            printf("Í¼ÖĞÒÑ´æÔÚ¸Ã¶¥µã£¬ÎŞ·¨²åÈë\n");
             return ERROR;
         }
     }
@@ -357,19 +377,25 @@ status InsertVex(ALGraph &G, VertexType v)
 }
 
 status DeleteVex(ALGraph &G, KeyType v)
-// åœ¨å›¾Gä¸­åˆ é™¤å…³é”®å­—vå¯¹åº”çš„é¡¶ç‚¹ä»¥åŠç›¸å…³çš„å¼§ï¼ŒæˆåŠŸè¿”å›OK,å¦åˆ™è¿”å›ERROR
+// ÔÚÍ¼GÖĞÉ¾³ı¹Ø¼ü×Öv¶ÔÓ¦µÄ¶¥µãÒÔ¼°Ïà¹ØµÄ»¡£¬³É¹¦·µ»ØOK,·ñÔò·µ»ØERROR
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     int n = LocateVertex(G, v);
     if (n == -1)
+    {
+        printf("Í¼ÖĞ²»´æÔÚ¸Ã¶¥µã£¬ÎŞ·¨É¾³ı\n");
         return ERROR;
+    }
 
-    // å¦‚æœåªæœ‰ä¸€ä¸ªç»“ç‚¹ï¼Œä¸èƒ½åˆ é™¤
+    // Èç¹ûÖ»ÓĞÒ»¸ö½áµã£¬²»ÄÜÉ¾³ı
     if (G.vexnum == 1)
+    {
+        printf("Í¼ÖĞÖ»ÓĞÒ»¸ö½áµã£¬ÎŞ·¨É¾³ı\n");
         return ERROR;
+    }
 
-    // 1.åˆ é™¤æ‰€æœ‰æŒ‡å‘è¯¥ç‚¹çš„é‚»æ¥è¡¨ç»“ç‚¹
+    // 1.É¾³ıËùÓĞÖ¸Ïò¸ÃµãµÄÁÚ½Ó±í½áµã
     for (int i = 0; i < G.vexnum; i++)
     {
         if (i == n)
@@ -406,7 +432,7 @@ status DeleteVex(ALGraph &G, KeyType v)
         }
     }
 
-    // 2.åˆ é™¤è¯¥ç‚¹å…³è”çš„é‚»æ¥è¡¨ç»“ç‚¹
+    // 2.É¾³ı¸Ãµã¹ØÁªµÄÁÚ½Ó±í½áµã
     ArcNode *p = G.vertices[n].firstarc;
     while (p)
     {
@@ -415,7 +441,7 @@ status DeleteVex(ALGraph &G, KeyType v)
         free(tmp);
     }
 
-    // 3.è°ƒæ•´é¡¶ç‚¹æ•°ç»„
+    // 3.µ÷Õû¶¥µãÊı×é
     for (int i = n; i < G.vexnum - 1; i++)
     {
         G.vertices[i] = G.vertices[i + 1];
@@ -429,20 +455,26 @@ status DeleteVex(ALGraph &G, KeyType v)
 }
 
 status InsertArc(ALGraph &G, KeyType v, KeyType w)
-// åœ¨å›¾Gä¸­å¢åŠ å¼§<v,w>ï¼ŒæˆåŠŸè¿”å›OK,å¦åˆ™è¿”å›ERROR
+// ÔÚÍ¼GÖĞÔö¼Ó»¡<v,w>£¬³É¹¦·µ»ØOK,·ñÔò·µ»ØERROR
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     int n = LocateVertex(G, v);
     int m = LocateVertex(G, w);
     if (n == -1 || m == -1)
+    {
+        printf("Í¼ÖĞ²»´æÔÚ¸Ã¶¥µã£¬ÎŞ·¨²åÈë\n");
         return ERROR;
+    }
 
     ArcNode *temp = G.vertices[m].firstarc;
     while (temp)
     {
         if (temp->adjvex == n)
+        {
+            printf("Í¼ÖĞÒÑ´æÔÚ¸Ã»¡£¬ÎŞ·¨²åÈë\n");
             return ERROR;
+        }
         temp = temp->nextarc;
     }
 
@@ -463,14 +495,17 @@ status InsertArc(ALGraph &G, KeyType v, KeyType w)
 }
 
 status DeleteArc(ALGraph &G, KeyType v, KeyType w)
-// åœ¨å›¾Gä¸­åˆ é™¤å¼§<v,w>ï¼ŒæˆåŠŸè¿”å›OK,å¦åˆ™è¿”å›ERROR
+// ÔÚÍ¼GÖĞÉ¾³ı»¡<v,w>£¬³É¹¦·µ»ØOK,·ñÔò·µ»ØERROR
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     int n = LocateVertex(G, v);
     int m = LocateVertex(G, w);
     if (n == -1 || m == -1)
+    {
+        printf("Í¼ÖĞ²»´æÔÚ¸Ã¶¥µã£¬ÎŞ·¨É¾³ı\n");
         return ERROR;
+    }
 
     ArcNode *temp = G.vertices[m].firstarc;
     int flag = 0;
@@ -481,7 +516,10 @@ status DeleteArc(ALGraph &G, KeyType v, KeyType w)
         temp = temp->nextarc;
     }
     if (!flag)
+    {
+        printf("Í¼ÖĞ²»´æÔÚ¸Ã»¡£¬ÎŞ·¨É¾³ı\n");
         return ERROR;
+    }
 
     ArcNode *p = G.vertices[m].firstarc;
     temp = NULL;
@@ -546,15 +584,15 @@ void dfs(ALGraph G, int n, int visited[])
 
 status visit(VertexType v)
 {
-    // è®¿é—®é¡¶ç‚¹çš„æ“ä½œ
+    // ·ÃÎÊ¶¥µãµÄ²Ù×÷
     printf("%d %s\n", v.key, v.others);
     return OK;
 }
 
 status DFSTraverse(ALGraph &G)
-// å¯¹å›¾Gè¿›è¡Œæ·±åº¦ä¼˜å…ˆæœç´¢éå†ï¼Œä¾æ¬¡å¯¹å›¾ä¸­çš„æ¯ä¸€ä¸ªé¡¶ç‚¹ä½¿ç”¨å‡½æ•°visitè®¿é—®ä¸€æ¬¡ï¼Œä¸”ä»…è®¿é—®ä¸€æ¬¡
+// ¶ÔÍ¼G½øĞĞÉî¶ÈÓÅÏÈËÑË÷±éÀú£¬ÒÀ´Î¶ÔÍ¼ÖĞµÄÃ¿Ò»¸ö¶¥µãÊ¹ÓÃº¯Êıvisit·ÃÎÊÒ»´Î£¬ÇÒ½ö·ÃÎÊÒ»´Î
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     int visited[G.vexnum] = {0};
 
@@ -571,9 +609,9 @@ status DFSTraverse(ALGraph &G)
 }
 
 status BFSTraverse(ALGraph &G)
-// å¯¹å›¾Gè¿›è¡Œå¹¿åº¦ä¼˜å…ˆæœç´¢éå†ï¼Œä¾æ¬¡å¯¹å›¾ä¸­çš„æ¯ä¸€ä¸ªé¡¶ç‚¹ä½¿ç”¨å‡½æ•°visitè®¿é—®ä¸€æ¬¡ï¼Œä¸”ä»…è®¿é—®ä¸€æ¬¡
+// ¶ÔÍ¼G½øĞĞ¹ã¶ÈÓÅÏÈËÑË÷±éÀú£¬ÒÀ´Î¶ÔÍ¼ÖĞµÄÃ¿Ò»¸ö¶¥µãÊ¹ÓÃº¯Êıvisit·ÃÎÊÒ»´Î£¬ÇÒ½ö·ÃÎÊÒ»´Î
 {
-    // è¯·åœ¨è¿™é‡Œè¡¥å……ä»£ç ï¼Œå®Œæˆæœ¬å…³ä»»åŠ¡
+    // ÇëÔÚÕâÀï²¹³ä´úÂë£¬Íê³É±¾¹ØÈÎÎñ
     /********** Begin *********/
     bool visited[G.vexnum] = {FALSE};
     queue<int> q;
@@ -617,22 +655,22 @@ status SaveGraph(ALGraph G, const char FileName[])
     if (!fp)
         return ERROR;
 
-    fprintf(fp, "%d %d\n", G.vexnum, G.arcnum); // å†™å…¥é¡¶ç‚¹æ•°å’Œè¾¹æ•°
+    fprintf(fp, "%d %d\n", G.vexnum, G.arcnum); // Ğ´Èë¶¥µãÊıºÍ±ßÊı
 
     for (int i = 0; i < G.vexnum; ++i)
     {
-        // å†™å…¥é¡¶ç‚¹ key å’Œ others
+        // Ğ´Èë¶¥µã key ºÍ others
         fprintf(fp, "%d %s", G.vertices[i].data.key, G.vertices[i].data.others);
 
-        // å†™å…¥é‚»æ¥ç‚¹ç´¢å¼•
+        // Ğ´ÈëÁÚ½ÓµãË÷Òı
         ArcNode *p = G.vertices[i].firstarc;
         while (p != NULL)
         {
-            fprintf(fp, " %d", p->adjvex); // å†™å…¥é‚»æ¥ç‚¹åœ¨æ•°ç»„ä¸­çš„ç´¢å¼•
+            fprintf(fp, " %d", p->adjvex); // Ğ´ÈëÁÚ½ÓµãÔÚÊı×éÖĞµÄË÷Òı
             p = p->nextarc;
         }
-        fprintf(fp, " -1 "); // ç»“æŸé‚»æ¥ç‚¹çš„è¾“å…¥
-        // æ¢è¡Œ
+        fprintf(fp, " -1 "); // ½áÊøÁÚ½ÓµãµÄÊäÈë
+        // »»ĞĞ
         fprintf(fp, "\n");
     }
 
@@ -646,12 +684,12 @@ status LoadGraph(ALGraph &G, const char FileName[])
     if (!fp)
         return ERROR;
 
-    // è¯»å–é¡¶ç‚¹æ•°å’Œè¾¹æ•°
+    // ¶ÁÈ¡¶¥µãÊıºÍ±ßÊı
     fscanf(fp, "%d %d", &G.vexnum, &G.arcnum);
     if (G.vexnum > MAX_VERTEX_NUM || G.arcnum > MAX_VERTEX_NUM * (MAX_VERTEX_NUM - 1) / 2)
         return ERROR;
 
-    // è¯»å–é¡¶ç‚¹å’Œå®ƒçš„é‚»æ¥ç‚¹
+    // ¶ÁÈ¡¶¥µãºÍËüµÄÁÚ½Óµã
     for (int i = 0; i < G.vexnum; ++i)
     {
         fscanf(fp, "%d %s", &G.vertices[i].data.key, G.vertices[i].data.others);
@@ -663,7 +701,7 @@ status LoadGraph(ALGraph &G, const char FileName[])
             if (!p)
                 return OVERFLOW;
             p->adjvex = adjvex;
-            // å°¾æ’æ³•æ„å»ºé‚»æ¥è¡¨
+            // Î²²å·¨¹¹½¨ÁÚ½Ó±í
             ArcNode *q = G.vertices[i].firstarc;
             if (q == NULL)
             {
@@ -729,30 +767,30 @@ void VerticesWithinDistanceK(ALGraph G, KeyType v, KeyType K)
 {
     if (K < 0)
     {
-        printf("è¾“å…¥çš„Kå€¼ä¸åˆæ³•\n");
+        printf("ÊäÈëµÄKÖµ²»ºÏ·¨\n");
         return;
     }
 
     int start = LocateVertex(G, v);
     if (start == -1)
     {
-        printf("è¾“å…¥çš„é¡¶ç‚¹ä¸åˆæ³•\n");
+        printf("ÊäÈëµÄ¶¥µã²»ºÏ·¨\n");
         return;
     }
 
     if (G.vexnum == 0)
     {
-        printf("å›¾ä¸ºç©º\n");
+        printf("Í¼Îª¿Õ\n");
         return;
     }
 
     if (G.arcnum == 0)
     {
-        printf("å›¾ä¸­æ²¡æœ‰è¾¹\n");
+        printf("Í¼ÖĞÃ»ÓĞ±ß\n");
         return;
     }
 
-    // ä½¿ç”¨ä¸€æ¬¡BFSæ±‚æ‰€æœ‰ç‚¹åˆ°vçš„è·ç¦»ï¼Œé¿å…å¤šæ¬¡ShortestPathLengthè°ƒç”¨
+    // Ê¹ÓÃÒ»´ÎBFSÇóËùÓĞµãµ½vµÄ¾àÀë£¬±ÜÃâ¶à´ÎShortestPathLengthµ÷ÓÃ
     int distance[MAX_VERTEX_NUM];
     for (int i = 0; i < G.vexnum; ++i)
         distance[i] = -1;
@@ -790,7 +828,7 @@ void VerticesWithinDistanceK(ALGraph G, KeyType v, KeyType K)
     }
 
     if (!flag)
-        printf("æ²¡æœ‰æ»¡è¶³æ¡ä»¶çš„é¡¶ç‚¹\n");
+        printf("Ã»ÓĞÂú×ãÌõ¼şµÄ¶¥µã\n");
 
     return;
 }
@@ -846,21 +884,24 @@ status AddGraph(GRAPHS &Graphs, char *Graphname)
 {
     if (Graphs.length >= MAX_GRAPH_SIZE)
     {
-        printf("å›¾çš„æ•°é‡å·²è¾¾ä¸Šé™ï¼Œæ— æ³•æ·»åŠ æ–°å›¾\n");
+        printf("Í¼µÄÊıÁ¿ÒÑ´ïÉÏÏŞ£¬ÎŞ·¨Ìí¼ÓĞÂÍ¼\n");
         return ERROR;
     }
 
     for (int i = 0; i < Graphs.length; i++)
     {
-        if (strcmp(Graphs.elem[i].vertices[0].data.others, Graphname) == 0)
+        if (strcmp(Graphs.elem[i].name, Graphname) == 0)
+        {
+            printf("Í¼ÒÑ´æÔÚ£¬ÎŞ·¨Ìí¼Ó\n");
             return ERROR;
+        }
     }
 
-    // åˆ›å»ºæ–°å›¾
+    // ´´½¨ĞÂÍ¼
     ALGraph newGraph;
     newGraph.vexnum = 0;
     newGraph.arcnum = 0;
-    newGraph.kind = UDG; // é»˜è®¤æ— å‘å›¾
+    newGraph.kind = UDG; // Ä¬ÈÏÎŞÏòÍ¼
     strcpy(newGraph.name, Graphname);
     Graphs.elem[Graphs.length] = newGraph;
     Graphs.length++;
@@ -874,15 +915,15 @@ status RemoveGraph(GRAPHS &Graphs, char *Graphname)
     int index = LocateGraph(Graphs, Graphname);
     if (index == -1)
     {
-        printf("å›¾ä¸å­˜åœ¨ï¼Œæ— æ³•åˆ é™¤\n");
+        printf("Í¼²»´æÔÚ£¬ÎŞ·¨É¾³ı\n");
         return ERROR;
     }
 
-    // é”€æ¯å›¾
+    // Ïú»ÙÍ¼
     DestroyGraph(Graphs.elem[index]);
     memset(&Graphs.elem[index], 0, sizeof(ALGraph));
 
-    // åˆ é™¤å›¾
+    // É¾³ıÍ¼
     for (int i = index; i < Graphs.length - 1; i++)
     {
         Graphs.elem[i] = Graphs.elem[i + 1];
@@ -897,7 +938,7 @@ status SwitchGraph(GRAPHS &Graphs, char *Graphname)
     int index = LocateGraph(Graphs, Graphname);
     if (index == -1)
     {
-        printf("å›¾ä¸å­˜åœ¨ï¼Œæ— æ³•åˆ‡æ¢\n");
+        printf("Í¼²»´æÔÚ£¬ÎŞ·¨ÇĞ»»\n");
         return ERROR;
     }
 
@@ -907,7 +948,7 @@ status SwitchGraph(GRAPHS &Graphs, char *Graphname)
 
 void PrintGraphslist(GRAPHS Graphs)
 {
-    printf("å½“å‰å›¾åˆ—è¡¨ï¼š\n");
+    printf("µ±Ç°Í¼ÁĞ±í£º\n");
     for (int i = 0; i < Graphs.length; i++)
     {
         printf("%d: %s\n", i + 1, Graphs.elem[i].name);
@@ -916,12 +957,12 @@ void PrintGraphslist(GRAPHS Graphs)
 
 void PrintGraphWithAdjList(ALGraph G)
 {
-    printf("\nå½“å‰çš„å›¾å’Œé‚»æ¥è¡¨ï¼š\n");
+    printf("\nµ±Ç°µÄÍ¼ºÍÁÚ½Ó±í£º\n");
     printf("-----------------------------------------------\n");
-    printf("å›¾åç§°ï¼š%s\n", G.name);
-    printf("é¡¶ç‚¹æ•°ï¼š%dï¼Œè¾¹æ•°ï¼š%d\n", G.vexnum, G.arcnum);
+    printf("Í¼Ãû³Æ£º%s\n", G.name);
+    printf("¶¥µãÊı£º%d£¬±ßÊı£º%d\n", G.vexnum, G.arcnum);
     printf("-----------------------------------------------\n");
-    printf("ä½ç½®åºå·  é¡¶ç‚¹ä¿¡æ¯         é‚»æ¥ç‚¹\n");
+    printf("Î»ÖÃĞòºÅ  ¶¥µãĞÅÏ¢         ÁÚ½Óµã\n");
     printf("-----------------------------------------------\n");
 
     for (int i = 0; i < G.vexnum; i++)
@@ -931,7 +972,7 @@ void PrintGraphWithAdjList(ALGraph G)
         ArcNode *p = G.vertices[i].firstarc;
         if (!p)
         {
-            printf("(æ— é‚»æ¥ç‚¹)");
+            printf("(ÎŞÁÚ½Óµã)");
         }
         else
         {
@@ -954,7 +995,7 @@ void PrintMenu(GRAPHS Graphs)
     printf("---------------------------------------------------------\n");
     printf("   Menu for Graph System On Adjacency List \n");
     printf("---------------------------------------------------------\n\n");
-    printf("å½“å‰å›¾ï¼š%s\n", Graphs.elem[Graphs.cur_index].name);
+    printf("µ±Ç°Í¼£º%s\n", Graphs.elem[Graphs.cur_index].name);
     printf("Basic Operations:\n");
     printf("      1. CreateGraph              2. DestroyGraph        \n");
     printf("      3. LocateVex                4. PutVex              \n");
@@ -971,7 +1012,7 @@ void PrintMenu(GRAPHS Graphs)
     printf("     20. SwitchGraph             21. PrintGraphs         \n");
     printf("     0. Exit                     22. PrintGraphWithAdjList\n");
     printf("---------------------------------------------------------\n");
-    printf("è¯·è¾“å…¥æ“ä½œé€‰é¡¹ï¼š\n");
+    printf("ÇëÊäÈë²Ù×÷Ñ¡Ïî£º\n");
 }
 
 int main()
@@ -982,29 +1023,29 @@ int main()
     ALGraph G;
     G.vexnum = 0;
     G.arcnum = 0;
-    G.kind = UDG; // é»˜è®¤æ— å‘å›¾
+    G.kind = UDG; // Ä¬ÈÏÎŞÏòÍ¼
     Graphs.elem[0] = G;
     char firstname[30];
     system("cls");
     printf("--------------------------------------------------\n");
-    printf("é‚»æ¥è¡¨å®ç°çš„å›¾ç³»ç»Ÿï¼Œå¯ä»¥å¯¹å•ä¸ªæˆ–å¤šä¸ªæ— å‘å›¾è¿›è¡Œæ“ä½œ\n");
+    printf("ÁÚ½Ó±íÊµÏÖµÄÍ¼ÏµÍ³£¬¿ÉÒÔ¶Ôµ¥¸ö»ò¶à¸öÎŞÏòÍ¼½øĞĞ²Ù×÷\n");
     printf("Author: HUST Cupid-qrq\n");
     printf("--------------------------------------------------\n");
-    printf("åœ¨å¼€å§‹ä¹‹å‰ï¼Œè¯·å…ˆè¾“å…¥ç¬¬ä¸€ä¸ªå›¾çš„åç§°ï¼š\n");
+    printf("ÔÚ¿ªÊ¼Ö®Ç°£¬ÇëÏÈÊäÈëµÚÒ»¸öÍ¼µÄÃû³Æ£º\n");
     if (scanf("%s", firstname) != 1)
     {
-        printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+        printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
         scanf("%s", firstname);
     }
-    printf("è¾“å…¥æˆåŠŸï¼Œç¬¬ä¸€ä¸ªå›¾çš„åç§°æ˜¯ï¼š%s\n", firstname);
+    printf("ÊäÈë³É¹¦£¬µÚÒ»¸öÍ¼µÄÃû³ÆÊÇ£º%s\n", firstname);
     strcpy(Graphs.elem[0].name, firstname);
-    printf("æ¥ä¸‹æ¥ï¼Œè¿›å…¥èœå•ç•Œé¢ï¼ŒæŒ‰ä»»æ„é”®ç»§ç»­ï¼š\n");
+    printf("½ÓÏÂÀ´£¬½øÈë²Ëµ¥½çÃæ£¬°´ÈÎÒâ¼ü¼ÌĞø£º\n");
     getchar();
     getchar();
 
-    int op = 1;                    // èœå•é€‰é¡¹
-    VertexType V[MAX_VERTEX_NUM];  // é¡¶ç‚¹æ•°ç»„
-    KeyType VR[MAX_VERTEX_NUM][2]; // è¾¹æ•°ç»„
+    int op = 1;                    // ²Ëµ¥Ñ¡Ïî
+    VertexType V[MAX_VERTEX_NUM];  // ¶¥µãÊı×é
+    KeyType VR[MAX_VERTEX_NUM][2]; // ±ßÊı×é
     int exist;
 
     char filename[100], treename[100];
@@ -1023,40 +1064,40 @@ int main()
         {
         case 1:
         {
-            // åˆ›å»ºå›¾
+            // ´´½¨Í¼
             if (Graphs.elem[Graphs.cur_index].vexnum != 0)
             {
-                printf("å½“å‰å›¾å·²å­˜åœ¨ï¼Œåˆ›å»ºå¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼ÒÑ´æÔÚ£¬´´½¨Ê§°Ü£¡\n");
                 break;
             }
 
-            // åˆå§‹åŒ–å®šä¹‰æ•°ç»„
+            // ³õÊ¼»¯¶¨ÒåÊı×é
 
             memset(V, 0, sizeof(V));
             memset(VR, 0, sizeof(VR));
 
-            printf("è¯·è¾“å…¥å›¾çš„é¡¶ç‚¹åºåˆ—ï¼Œæ ¼å¼ä¸ºï¼škey othersï¼Œä»¥ -1 nil ç»“æŸã€‚\n");
+            printf("ÇëÊäÈëÍ¼µÄ¶¥µãĞòÁĞ£¬¸ñÊ½Îª£ºkey others£¬ÒÔ -1 nil ½áÊø¡£\n");
             int i = 0;
             do
             {
                 scanf("%d%s", &V[i].key, V[i].others);
             } while (V[i++].key != -1);
             i = 0;
-            printf("è¯·è¾“å…¥å›¾çš„è¾¹åºåˆ—ï¼Œæ ¼å¼ä¸ºï¼šv1 v2ï¼Œä»¥ -1 -1 ç»“æŸã€‚\n");
+            printf("ÇëÊäÈëÍ¼µÄ±ßĞòÁĞ£¬¸ñÊ½Îª£ºv1 v2£¬ÒÔ -1 -1 ½áÊø¡£\n");
             do
             {
                 scanf("%d%d", &VR[i][0], &VR[i][1]);
             } while (VR[i++][0] != -1);
 
-            // æ„é€ æ–°å›¾
+            // ¹¹ÔìĞÂÍ¼
             status res = CreateGraph(Graphs.elem[Graphs.cur_index], V, VR);
             if (res == OK)
             {
-                printf("å›¾åˆ›å»ºæˆåŠŸã€‚\n");
+                printf("Í¼´´½¨³É¹¦¡£\n");
             }
             else
             {
-                printf("å›¾åˆ›å»ºå¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šé‡å¤ key æˆ–å†…å­˜ä¸è¶³ã€‚\n");
+                printf("Í¼´´½¨Ê§°Ü£¬¿ÉÄÜÔ­Òò£ºÖØ¸´ key »òÄÚ´æ²»×ã¡£\n");
             }
 
             break;
@@ -1065,14 +1106,14 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œé”€æ¯å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬Ïú»ÙÊ§°Ü£¡\n");
                 break;
             }
 
             if (DestroyGraph(Graphs.elem[Graphs.cur_index]) == OK)
-                printf("å›¾é”€æ¯æˆåŠŸï¼\n");
+                printf("Í¼Ïú»Ù³É¹¦£¡\n");
             else
-                printf("å›¾ä¸å­˜åœ¨ï¼Œé”€æ¯å¤±è´¥ï¼\n");
+                printf("Í¼²»´æÔÚ£¬Ïú»ÙÊ§°Ü£¡\n");
 
             break;
         }
@@ -1080,26 +1121,26 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             int index;
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &exist) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             index = LocateVertex(Graphs.elem[Graphs.cur_index], exist);
             if (index == -1)
             {
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼Œç»“ç‚¹ä¸å­˜åœ¨ï¼\n");
+                printf("²éÕÒÊ§°Ü£¬½áµã²»´æÔÚ£¡\n");
             }
             else
             {
-                printf("æŸ¥æ‰¾æˆåŠŸï¼Œç»“ç‚¹çš„é¡¶ç‚¹ä½ç½®åºå·æ˜¯ï¼š%d\n", index);
+                printf("²éÕÒ³É¹¦£¬½áµãµÄ¶¥µãÎ»ÖÃĞòºÅÊÇ£º%d\n", index);
             }
 
             break;
@@ -1108,37 +1149,37 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œä¿®æ”¹å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬ĞŞ¸ÄÊ§°Ü£¡\n");
                 break;
             }
 
             exist = 0;
-            printf("è¯·è¾“å…¥è¦ä¿®æ”¹çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒªĞŞ¸ÄµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &exist) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             int index = LocateVertex(Graphs.elem[Graphs.cur_index], exist);
             if (index == -1)
             {
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼Œç»“ç‚¹ä¸å­˜åœ¨ï¼\n");
+                printf("²éÕÒÊ§°Ü£¬½áµã²»´æÔÚ£¡\n");
             }
             else
             {
-                printf("è¯·è¾“å…¥æ–°çš„ç»“ç‚¹å€¼ï¼š\n");
+                printf("ÇëÊäÈëĞÂµÄ½áµãÖµ£º\n");
                 VertexType newVex;
                 scanf("%d", &newVex.key);
                 strcpy(newVex.others, Graphs.elem[Graphs.cur_index].vertices[index].data.others);
 
                 if (PutVex(Graphs.elem[Graphs.cur_index], exist, newVex) == OK)
                 {
-                    printf("ä¿®æ”¹æˆåŠŸï¼\n");
+                    printf("ĞŞ¸Ä³É¹¦£¡\n");
                 }
                 else
                 {
-                    printf("ä¿®æ”¹å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šé‡å¤ key æˆ–å†…å­˜ä¸è¶³ã€‚\n");
+                    printf("ĞŞ¸ÄÊ§°Ü£¬¿ÉÄÜÔ­Òò£ºÖØ¸´ key »òÄÚ´æ²»×ã¡£\n");
                 }
             }
 
@@ -1148,25 +1189,25 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             exist = 0;
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &exist) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
             int res = FirstAdjVex(Graphs.elem[Graphs.cur_index], exist);
             if (res == -1)
             {
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼Œç»“ç‚¹ä¸å­˜åœ¨ï¼\n");
+                printf("²éÕÒÊ§°Ü£¬½áµã²»´æÔÚ£¡\n");
             }
             else
             {
-                printf("æŸ¥æ‰¾æˆåŠŸï¼Œç»“ç‚¹çš„ç¬¬ä¸€é‚»æ¥é¡¶ç‚¹æ˜¯ï¼š\n");
+                printf("²éÕÒ³É¹¦£¬½áµãµÄµÚÒ»ÁÚ½Ó¶¥µãÊÇ£º\n");
                 printf(" %d %s\n", Graphs.elem[Graphs.cur_index].vertices[res].data.key, Graphs.elem[Graphs.cur_index].vertices[res].data.others);
             }
 
@@ -1176,31 +1217,31 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             int v, w;
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &v) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
-            printf("è¯·è¾“å…¥è¯¥ç»“ç‚¹çš„ä¸€ä¸ªé‚»æ¥ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈë¸Ã½áµãµÄÒ»¸öÁÚ½Ó½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &w) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
             int res2 = NextAdjVex(Graphs.elem[Graphs.cur_index], v, w);
             if (res2 == -1)
             {
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼Œè¯¥ç»“ç‚¹çš„è¿™ä¸ªé‚»æ¥ç‚¹çš„ä¸‹ä¸€ä¸ªé‚»æ¥ç‚¹ä¸å­˜åœ¨ï¼Œæˆ–è¯¥ç»“ç‚¹ä¸å­˜åœ¨ï¼Œæˆ–è¯¥ç»“ç‚¹çš„è¿™ä¸ªé‚»æ¥ç‚¹ä¸å­˜åœ¨ï¼\n");
+                printf("²éÕÒÊ§°Ü\n");
             }
             else
             {
-                printf("æŸ¥æ‰¾æˆåŠŸï¼Œç»“ç‚¹çš„ä¸‹ä¸€ä¸ªé‚»æ¥é¡¶ç‚¹æ˜¯ï¼š\n");
+                printf("²éÕÒ³É¹¦£¬½áµãµÄÏÂÒ»¸öÁÚ½Ó¶¥µãÊÇ£º\n");
                 printf(" %d %s\n", Graphs.elem[Graphs.cur_index].vertices[res2].data.key, Graphs.elem[Graphs.cur_index].vertices[res2].data.others);
             }
 
@@ -1210,25 +1251,25 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œæ’å…¥é¡¶ç‚¹å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²åÈë¶¥µãÊ§°Ü£¡\n");
                 break;
             }
 
             VertexType newVex;
-            printf("è¯·è¾“å…¥è¦æ’å…¥çš„ç»“ç‚¹çš„keyå’Œothersï¼š\n");
+            printf("ÇëÊäÈëÒª²åÈëµÄ½áµãµÄkeyºÍothers£º\n");
             if (scanf("%d %s", &newVex.key, newVex.others) != 2)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (InsertVex(Graphs.elem[Graphs.cur_index], newVex) == OK)
             {
-                printf("æ’å…¥æˆåŠŸï¼\n");
+                printf("²åÈë³É¹¦£¡\n");
             }
             else
             {
-                printf("æ’å…¥å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šé‡å¤ key æˆ–é¡¶ç‚¹å·²æ»¡ã€‚\n");
+                printf("²åÈëÊ§°Ü\n");
             }
 
             break;
@@ -1237,25 +1278,25 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œåˆ é™¤é¡¶ç‚¹å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬É¾³ı¶¥µãÊ§°Ü£¡\n");
                 break;
             }
 
             int exist = 0;
-            printf("è¯·è¾“å…¥è¦åˆ é™¤çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒªÉ¾³ıµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &exist) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (DeleteVex(Graphs.elem[Graphs.cur_index], exist) == OK)
             {
-                printf("åˆ é™¤æˆåŠŸï¼\n");
+                printf("É¾³ı³É¹¦£¡\n");
             }
             else
             {
-                printf("åˆ é™¤å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šç»“ç‚¹ä¸å­˜åœ¨æˆ–åªå‰©ä¸€ä¸ªç»“ç‚¹ã€‚\n");
+                printf("É¾³ıÊ§°Ü¡£\n");
             }
 
             break;
@@ -1264,25 +1305,25 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œæ’å…¥è¾¹å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²åÈë±ßÊ§°Ü£¡\n");
                 break;
             }
 
             int v1, v2;
-            printf("è¯·è¾“å…¥è¦æ’å…¥çš„å¼§çš„ä¸¤ä¸ªé¡¶ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²åÈëµÄ»¡µÄÁ½¸ö¶¥µãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d %d", &v1, &v2) != 2)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (InsertArc(Graphs.elem[Graphs.cur_index], v1, v2) == OK)
             {
-                printf("æ’å…¥æˆåŠŸï¼\n");
+                printf("²åÈë³É¹¦£¡\n");
             }
             else
             {
-                printf("æ’å…¥å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šå¼§å·²å­˜åœ¨æˆ–é¡¶ç‚¹ä¸å­˜åœ¨ã€‚\n");
+                printf("²åÈëÊ§°Ü¡£\n");
             }
 
             break;
@@ -1291,26 +1332,26 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œåˆ é™¤è¾¹å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬É¾³ı±ßÊ§°Ü£¡\n");
                 break;
             }
 
             int v1, v2;
             v1 = v2 = 0;
-            printf("è¯·è¾“å…¥è¦åˆ é™¤çš„å¼§çš„ä¸¤ä¸ªé¡¶ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒªÉ¾³ıµÄ»¡µÄÁ½¸ö¶¥µãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d %d", &v1, &v2) != 2)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (DeleteArc(Graphs.elem[Graphs.cur_index], v1, v2) == OK)
             {
-                printf("åˆ é™¤æˆåŠŸï¼\n");
+                printf("É¾³ı³É¹¦£¡\n");
             }
             else
             {
-                printf("åˆ é™¤å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šè¾¹ä¸å­˜åœ¨æˆ–é¡¶ç‚¹ä¸å­˜åœ¨ã€‚\n");
+                printf("É¾³ıÊ§°Ü¡£\n");
             }
 
             break;
@@ -1319,11 +1360,11 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œéå†å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬±éÀúÊ§°Ü£¡\n");
                 break;
             }
 
-            printf("æ·±åº¦ä¼˜å…ˆéå†ç»“æœï¼š\n");
+            printf("Éî¶ÈÓÅÏÈ±éÀú½á¹û£º\n");
             DFSTraverse(Graphs.elem[Graphs.cur_index]);
             printf("\n");
 
@@ -1333,11 +1374,11 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œéå†å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬±éÀúÊ§°Ü£¡\n");
                 break;
             }
 
-            printf("å¹¿åº¦ä¼˜å…ˆéå†ç»“æœï¼š\n");
+            printf("¹ã¶ÈÓÅÏÈ±éÀú½á¹û£º\n");
             BFSTraverse(Graphs.elem[Graphs.cur_index]);
             printf("\n");
 
@@ -1347,24 +1388,24 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼Œä¿å­˜å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬±£´æÊ§°Ü£¡\n");
                 break;
             }
 
-            printf("è¯·è¾“å…¥è¦ä¿å­˜çš„æ–‡ä»¶åï¼š\n");
+            printf("ÇëÊäÈëÒª±£´æµÄÎÄ¼şÃû£º\n");
             if (scanf("%s", filename) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (SaveGraph(Graphs.elem[Graphs.cur_index], filename) == OK)
             {
-                printf("ä¿å­˜æˆåŠŸï¼\n");
+                printf("±£´æ³É¹¦£¡\n");
             }
             else
             {
-                printf("ä¿å­˜å¤±è´¥ã€‚\n");
+                printf("±£´æÊ§°Ü¡£\n");
             }
 
             break;
@@ -1373,24 +1414,24 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum != 0)
             {
-                printf("å½“å‰å›¾å·²å­˜åœ¨ï¼ŒåŠ è½½å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼ÒÑ´æÔÚ£¬¼ÓÔØÊ§°Ü£¡\n");
                 break;
             }
 
-            printf("è¯·è¾“å…¥è¦åŠ è½½çš„æ–‡ä»¶åï¼š\n");
+            printf("ÇëÊäÈëÒª¼ÓÔØµÄÎÄ¼şÃû£º\n");
             if (scanf("%s", filename) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (LoadGraph(Graphs.elem[Graphs.cur_index], filename) == OK)
             {
-                printf("åŠ è½½æˆåŠŸï¼\n");
+                printf("¼ÓÔØ³É¹¦£¡\n");
             }
             else
             {
-                printf("åŠ è½½å¤±è´¥ã€‚\n");
+                printf("¼ÓÔØÊ§°Ü¡£\n");
             }
 
             break;
@@ -1399,27 +1440,27 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             int v1, v2;
             v1 = v2 = 0;
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d %d", &v1, &v2) != 2)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             int res3 = ShortestPathLength(Graphs.elem[Graphs.cur_index], v1, v2);
             if (res3 == ERROR)
             {
-                printf("æŸ¥æ‰¾å¤±è´¥ï¼Œç»“ç‚¹ä¸å­˜åœ¨ï¼\n");
+                printf("²éÕÒÊ§°Ü£¬½áµã²»´æÔÚ£¡\n");
             }
             else
             {
-                printf("æŸ¥æ‰¾æˆåŠŸï¼Œæœ€çŸ­è·¯å¾„é•¿åº¦æ˜¯ï¼š%d\n", res3);
+                printf("²éÕÒ³É¹¦£¬×î¶ÌÂ·¾¶³¤¶ÈÊÇ£º%d\n", res3);
             }
 
             break;
@@ -1428,25 +1469,25 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             int v1 = 0;
             int k = 0;
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„ç»“ç‚¹çš„å…³é”®å­—ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ½áµãµÄ¹Ø¼ü×Ö£º\n");
             if (scanf("%d", &v1) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
-            printf("è¯·è¾“å…¥è¦æŸ¥æ‰¾çš„è·ç¦»ï¼š\n");
+            printf("ÇëÊäÈëÒª²éÕÒµÄ¾àÀë£º\n");
             if (scanf("%d", &k) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
-            printf("æŸ¥æ‰¾ç»“æœï¼š\n");
+            printf("²éÕÒ½á¹û£º\n");
             VerticesWithinDistanceK(Graphs.elem[Graphs.cur_index], v1, k);
             printf("\n");
 
@@ -1456,12 +1497,12 @@ int main()
         {
             if (Graphs.elem[Graphs.cur_index].vexnum == 0)
             {
-                printf("å½“å‰å›¾ä¸å­˜åœ¨ï¼ŒæŸ¥æ‰¾å¤±è´¥ï¼\n");
+                printf("µ±Ç°Í¼²»´æÔÚ£¬²éÕÒÊ§°Ü£¡\n");
                 break;
             }
 
             int num = ConnectedComponentsNum(Graphs.elem[Graphs.cur_index]);
-            printf("è¿é€šåˆ†é‡çš„ä¸ªæ•°æ˜¯ï¼š%d\n", num);
+            printf("Á¬Í¨·ÖÁ¿µÄ¸öÊıÊÇ£º%d\n", num);
 
             break;
         }
@@ -1469,56 +1510,56 @@ int main()
         {
             if (Graphs.length >= MAX_GRAPH_SIZE)
             {
-                printf("å›¾çš„æ•°é‡å·²è¾¾ä¸Šé™ï¼Œæ— æ³•æ·»åŠ æ–°å›¾\n");
+                printf("Í¼µÄÊıÁ¿ÒÑ´ïÉÏÏŞ£¬ÎŞ·¨Ìí¼ÓĞÂÍ¼\n");
                 break;
             }
 
-            printf("è¯·è¾“å…¥è¦æ·»åŠ çš„å›¾çš„åç§°ï¼š\n");
+            printf("ÇëÊäÈëÒªÌí¼ÓµÄÍ¼µÄÃû³Æ£º\n");
             if (scanf("%s", treename) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (AddGraph(Graphs, treename) == OK)
             {
-                printf("æ·»åŠ æˆåŠŸï¼\n");
+                printf("Ìí¼Ó³É¹¦£¡\n");
             }
             else
             {
-                printf("æ·»åŠ å¤±è´¥ï¼Œå¯èƒ½åŸå› ï¼šå›¾å·²å­˜åœ¨æˆ–å†…å­˜ä¸è¶³ã€‚\n");
+                printf("Ìí¼ÓÊ§°Ü¡£\n");
             }
 
             break;
         }
         case 19:
         {
-            printf("è¯·è¾“å…¥è¦åˆ é™¤çš„å›¾çš„åç§°ï¼š\n");
+            printf("ÇëÊäÈëÒªÉ¾³ıµÄÍ¼µÄÃû³Æ£º\n");
             if (scanf("%s", treename) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (RemoveGraph(Graphs, treename) == OK)
             {
-                printf("åˆ é™¤æˆåŠŸï¼\n");
+                printf("É¾³ı³É¹¦£¡\n");
             }
 
             break;
         }
         case 20:
         {
-            printf("è¯·è¾“å…¥è¦åˆ‡æ¢çš„å›¾çš„åç§°ï¼š\n");
+            printf("ÇëÊäÈëÒªÇĞ»»µÄÍ¼µÄÃû³Æ£º\n");
             if (scanf("%s", treename) != 1)
             {
-                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
                 continue;
             }
 
             if (SwitchGraph(Graphs, treename) == OK)
             {
-                printf("åˆ‡æ¢æˆåŠŸï¼\n");
+                printf("ÇĞ»»³É¹¦£¡\n");
             }
 
             break;
@@ -1531,22 +1572,27 @@ int main()
 
         case 22:
         {
+            if (Graphs.elem[Graphs.cur_index].vexnum == 0)
+            {
+                printf("µ±Ç°Í¼²»´æÔÚ£¬´òÓ¡Ê§°Ü£¡\n");
+                break;
+            }
             PrintGraphWithAdjList(Graphs.elem[Graphs.cur_index]);
             break;
         }
         case 0:
         {
-            printf("é€€å‡ºç³»ç»Ÿï¼\n");
+            printf("ÍË³öÏµÍ³£¡\n");
             break;
         }
         default:
-            printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼š\n");
+            printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë£º\n");
             break;
         }
 
         if (op != 0)
         {
-            printf("æŒ‰å›è½¦é”®ç»§ç»­...\n");
+            printf("°´»Ø³µ¼ü¼ÌĞø...\n");
             getchar();
             getchar();
         }
